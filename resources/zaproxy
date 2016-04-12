@@ -1,0 +1,53 @@
+#!/bin/sh        
+# chkconfig: 2345 20 80                                                                                                                                            
+### BEGIN INIT INFO                                                                                                                                          
+# Provides:          Encapsulates ZAProxy program as a service.                                                                                              
+# Description:       Enable service provided by daemon with name of session.                                                                                 
+# Usage:             zaproxy start session-name | zaproxy stop session-name                                                                                  
+### END INIT INFO                                                                                                                                                                                                                                                                                                  
+name=zaproxy                                                                                                                                                 
+dir=/opt/zaproxy                                                                                                                                             
+cmd="./zap.sh -daemon -port 9090 -host 0.0.0.0 -installdir ${dir} -newsession ${dir}/test-results/$2.session"                                         
+                                                                                                                                                             
+name=`basename $0`                                                                                                                                           
+pid_file="${dir}/logs/$name.pid"                                                                                                                           
+stdout_log="${dir}/logs/$name.log"                                                                                                                     
+stderr_log="${dir}/logs/$name.err"                                                                                                                         
+                                                                                                                                                             
+get_pid() {                                                                                                                                                  
+    cat "$pid_file"                                                                                                                                          
+}                                                                                                                                                            
+                                                                                                                                                             
+is_running() {                                                                                                                                               
+    [ -f "$pid_file" ] && ps `get_pid` > /dev/null 2>&1                                                                                                      
+}                                                                                                                                                            
+                                                                                                                                                             
+case "$1" in                                                                                                                                                 
+    start)                                                                                                                                                   
+    if is_running; then                                                                                                                                      
+        echo "Already started"                                                                                                                               
+    else                                                                                                                                                     
+        echo "Starting $name"                                                                                                                                
+        cd "$dir"                                                                                                                                            
+        $cmd                                                                                                                                                                                                                                                           
+    fi                                        
+    ;;                                                                                                                                                       
+    stop)                                                                                                                                                                                                                                                                                                        
+        echo "Generating vulnerability report..."                                                                                                            
+        cd "$dir"                                                                                                                                            
+        ./zap.sh -cmd -installdir ${dir} -last_scan_report ${dir}/test-results/$2-report.html -session ${dir}/test-results/$2.session                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    ;;                                                                                                                                                       
+    status)                                                                                                                                                  
+    if is_running; then                                                                                                                                      
+        echo "Running..."                                                                                                                                    
+    else                                                                                                                                                     
+        echo "Stopped."                                                                                                                                      
+        exit 1                                                                                                                                               
+    fi                                                                                                                                                       
+    ;;                                                                                                                                                       
+    *)                                                                                                                                                       
+    echo "Usage: $0 {start session-name |stop session-name |status}"                                                                                         
+    exit 1                                                                                                                                                   
+    ;;                                                                                                                                                       
+esac                                                                                                                                                         
+                                                                                                                                                             
