@@ -5,7 +5,7 @@
 FROM java:7
 MAINTAINER Robert Northard, <robert.a.northard@accenture.com>
 
-RUN \ 
+RUN \
 	apt-get update -y && \
 	apt-get install -y tar
 
@@ -14,7 +14,7 @@ ENV ZAP_HOME /opt/zaproxy
 ENV ZAP_VERSION 2.4.3
 # Install OWASP ZAP
 RUN \
-        wget https://github.com/zaproxy/zaproxy/releases/download/2.4.3/ZAP_2.4.3_Linux.tar.gz && \ 
+        wget https://github.com/zaproxy/zaproxy/releases/download/2.4.3/ZAP_2.4.3_Linux.tar.gz && \
 	mkdir $ZAP_HOME && \
 	mkdir $ZAP_HOME/logs && \
 	mkdir $ZAP_HOME/test-results && \
@@ -31,4 +31,4 @@ VOLUME	   ["$ZAP_HOME/test-results"]
 EXPOSE 9090
 
 # Default entry point
-ENTRYPOINT ["service", "zaproxy", "start"]
+ENTRYPOINT ["service", "zaproxy"]
