@@ -21,7 +21,7 @@ RUN \
 	tar -xf ZAP_2.4.3_Linux.tar.gz -C $ZAP_HOME --strip-components=1 && \
 	rm -rf ZAP_2.4.3_Linux.tar.gz
 
-ADD resources/zaproxy /etc/init.d/zaproxy
+COPY resources/zaproxy /etc/init.d/zaproxy
 RUN chmod +x /etc/init.d/zaproxy
 
 # Expose test results/sessions
