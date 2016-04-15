@@ -1,4 +1,4 @@
-# elasticsearch elasticsearch image, NOTICES AND INFORMATION BEGIN HERE
+# OWASP ZAP PROXY, OWASP ZAP PROXY image, NOTICES AND INFORMATION BEGIN HERE
 
 Apache License
 Version 2.0, January 2004
